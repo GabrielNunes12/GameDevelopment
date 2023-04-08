@@ -8,6 +8,7 @@ namespace RPG.Character
 
         public override void EnterState(EnemyController enemy)
         {
+            enemy.movementComponent.UpdateAgentMovementSpeed(enemy.stats.walkSpeed);
             if(enemy.patrolComponent != null)
             {
                 targetPos = enemy.patrolComponent.GetNextPosition();

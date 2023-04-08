@@ -2,14 +2,16 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
-using RPG.Utility;
+using System.Collections;
 
 namespace RPG.Character
 {
     [RequireComponent(typeof(NavMeshAgent))]
     public class Movement : MonoBehaviour
     {
-        [SerializeField] private float playerSpeedSprint = 1.5f;
+        [SerializeField] private float playerSpeedSprint = 2.5f;
+        [SerializeField] private float playerStamina = 10f;
+        [SerializeField] private float staminaRegenerationRate = 1f;
         private Vector3 movementVector;
         private NavMeshAgent navMeshAgent;
         private bool isShiftPressed;
@@ -49,9 +51,19 @@ namespace RPG.Character
         private void MovePlayer()
         {
             Vector3 offset = movementVector * Time.deltaTime * navMeshAgent.speed;
-            if(isShiftPressed)
+            if (isShiftPressed && playerStamina > 0)
             {
                 offset *= playerSpeedSprint;
+                //stamina
+                playerStamina -= 2f * Time.deltaTime;
+                if(playerStamina < 0f)
+                {
+                    playerStamina = 0f;
+                }
+            }
+            else
+            {
+                StartCoroutine(RegenerateStamina());
             }
             navMeshAgent.Move(offset);
         }
@@ -73,6 +85,18 @@ namespace RPG.Character
         public void MoveAgentByOffset(Vector3 offset)
         {
             navMeshAgent.Move(offset);
+        }
+        private IEnumerator RegenerateStamina()
+        {
+            while (!isShiftPressed && playerStamina < 10f)
+            {
+                playerStamina += staminaRegenerationRate * Time.deltaTime;
+                yield return null;
+            }
+        }
+        public void UpdateAgentMovementSpeed(float newSpeed)
+        {
+            navMeshAgent.speed = newSpeed; 
         }
     }
 }

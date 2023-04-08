@@ -12,6 +12,8 @@ namespace RPG.Character
         public float attackRange = 0.7f;
         public float attackPower = 1f;
         public float hitPlayer = 100f;
+        private Health healthComponent;
+        private Combat combatComponent;
         public CharacterStatsSO stats;
         [NonSerialized] public float distanceFromPlayer;
         [NonSerialized] public Movement movementComponent;
@@ -30,6 +32,8 @@ namespace RPG.Character
                 Debug.LogWarning($"{name} does not have stats");
             }
             currentState = returnState;
+            healthComponent = GetComponent<Health>();
+            combatComponent = GetComponent<Combat>();
             patrolComponent = GetComponent<SplinesControl>();
             player = GameObject.FindWithTag(Constants.PLAYER_TAG);
             movementComponent = GetComponent<Movement>();
@@ -39,6 +43,8 @@ namespace RPG.Character
         private void Start()
         {
             currentState.EnterState(this);
+            healthComponent.healthPoints = stats.health;
+            combatComponent.damage = stats.powerAttack;
         }
 
         public void SwitchState(AIBaseState newState)
@@ -66,7 +72,6 @@ namespace RPG.Character
             Gizmos.DrawWireSphere(transform.position, rangeRadius);
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(transform.position, attackRange);
-
         }
 
     }

@@ -8,7 +8,7 @@ namespace RPG.Character
     {
         public override void EnterState(EnemyController enemy)
         {
-
+            enemy.movementComponent.UpdateAgentMovementSpeed(enemy.stats.runSpeed);
         }
         public override void UpdateState(EnemyController enemy)
         {
