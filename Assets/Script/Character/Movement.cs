@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using System.Collections;
+using RPG.Utility;
 
 namespace RPG.Character
 {
@@ -23,14 +24,14 @@ namespace RPG.Character
         private void Update()
         {
             MovePlayer();
-            RotatePlayer();
+            if(CompareTag(Constants.PLAYER_TAG)) RotatePlayer(movementVector);
         }
 
-        private void RotatePlayer()
+        public void RotatePlayer(Vector3 newPosition)
         {
-            if(movementVector == Vector3.zero) return;
+            if(newPosition == Vector3.zero) return;
             Quaternion startRotation = transform.rotation;
-            Quaternion endRotation = Quaternion.LookRotation(movementVector);
+            Quaternion endRotation = Quaternion.LookRotation(newPosition);
             //transforming the player's position on z axis
             transform.rotation = Quaternion.Lerp(
                 startRotation,

@@ -23,6 +23,8 @@ namespace RPG.Character
                 return;
             }
             enemy.movementComponent.MoveAgentByDestination(enemy.player.transform.position);
+            Vector3 playerDirection = enemy.player.transform.position - enemy.transform.position;
+            enemy.movementComponent.RotatePlayer(playerDirection);
         }
     }
 
