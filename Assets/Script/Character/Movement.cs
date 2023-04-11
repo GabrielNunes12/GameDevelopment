@@ -10,6 +10,7 @@ namespace RPG.Character
     [RequireComponent(typeof(NavMeshAgent))]
     public class Movement : MonoBehaviour
     {
+        [NonSerialized] public Vector3 originalForwardVector;
         [SerializeField] private float playerSpeedSprint = 2.5f;
         [SerializeField] private float playerStamina = 10f;
         [SerializeField] private float staminaRegenerationRate = 1f;
@@ -20,6 +21,11 @@ namespace RPG.Character
         private void Awake()
         {
             navMeshAgent = GetComponent<NavMeshAgent>();
+            originalForwardVector = transform.forward;
+        }
+        private void Start()
+        {
+            navMeshAgent.updateRotation = false; 
         }
         private void Update()
         {

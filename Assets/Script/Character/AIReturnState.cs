@@ -33,6 +33,25 @@ namespace RPG.Character
                 {
                     enemy.SwitchState(enemy.patrolState);
                     return;
+                } 
+                else
+                {
+                    enemy.movementComponent.RotatePlayer(enemy.movementComponent.originalForwardVector);
+                }
+            }
+            else
+            {
+                if(enemy.patrolComponent != null)
+                {
+                    Vector3 newForwardVector = targetPos - enemy.transform.position;
+                    newForwardVector.y = 0;
+                    enemy.movementComponent.RotatePlayer(newForwardVector);
+                }
+                else
+                {
+                    Vector3 newForwardVector = enemy.originalPos - enemy.transform.position;
+                    newForwardVector.y = 0;
+                    enemy.movementComponent.RotatePlayer(newForwardVector);
                 }
             }
         }

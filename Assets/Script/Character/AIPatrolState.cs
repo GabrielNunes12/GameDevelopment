@@ -23,6 +23,11 @@ namespace RPG.Character
             Vector3 newPosition = enemy.patrolComponent.GetNextPosition();
             Vector3 offset = newPosition - currentPosition;
             enemy.movementComponent.MoveAgentByOffset(offset);
+
+            Vector3 fartherOutPosition = enemy.patrolComponent.GetFartherPosition();
+            Vector3 newForwardVector = fartherOutPosition - currentPosition;
+            newForwardVector.y = 0;
+            enemy.movementComponent.RotatePlayer(newForwardVector);
         }
     }
 
